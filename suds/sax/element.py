@@ -248,7 +248,13 @@ class Element:
         if isinstance(value, Text):
             self.text = value
         else:
-            self.text = Text(value)
+            if isinstance(value, str):
+                try:
+                    self.text = Text(value.decode("utf8"))
+                except UnicodeDecodeError,e:
+                    self.text = Text(value.decode("cp1251"))
+            else:
+                self.text = Text(value)
         return self
         
     def getText(self, default=None):
